@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Fantasy Basketball Assistant</title>
+    <link rel="stylesheet" href="sidepanel.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>Fantasy Basketball Assistant</h1>
+    </header>
+
+    <nav id="tabs" class="tabs">
+      <button class="tab-btn" data-tab="my-team" type="button">My Team</button>
+      <button class="tab-btn" data-tab="categories" type="button">Categories</button>
+      <button class="tab-btn" data-tab="suggestions" type="button">Suggestions</button>
+      <button class="tab-btn" data-tab="rankings" type="button">Rankings</button>
+      <button class="tab-btn" data-tab="setup" type="button">Setup</button>
+    </nav>
+
+    <main id="view-root"></main>
+
+    <script type="module" src="sidepanel.js"></script>
+  </body>
+</html>

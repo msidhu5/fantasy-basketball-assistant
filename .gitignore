@@ -1,0 +1,10 @@
+node_modules/
+
+# Bundled from a personal projections CSV (npm run update-projections regenerates
+# it from a local file) - don't publish someone else's/your own paid provider data.
+shared/projections-data.js
+
+# Editor/OS cruft
+*.swp
+.*.swp
+.DS_Store

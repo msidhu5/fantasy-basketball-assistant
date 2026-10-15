@@ -1,0 +1,7 @@
+{
+  "player a": { "rawName": "Player A", "PTS": 20, "REB": 5, "AST": 5, "STL": 1, "BLK": 0.5, "THREEPM": 2, "FGPCT": 0.48, "FTPCT": 0.8, "TO": 2.5 },
+  "player b": { "rawName": "Player B", "PTS": 10, "REB": 12, "AST": 2, "STL": 0.8, "BLK": 2.5, "THREEPM": 0.1, "FGPCT": 0.55, "FTPCT": 0.65, "TO": 1.8 },
+  "player c": { "rawName": "Player C", "PTS": 15, "REB": 4, "AST": 9, "STL": 1.8, "BLK": 0.3, "THREEPM": 2.8, "FGPCT": 0.45, "FTPCT": 0.85, "TO": 3.2 },
+  "player d": { "rawName": "Player D", "PTS": 8, "REB": 3, "AST": 2, "STL": 2.2, "BLK": 0.2, "THREEPM": 1.5, "FGPCT": 0.44, "FTPCT": 0.78, "TO": 1.2 },
+  "player e": { "rawName": "Player E", "PTS": 22, "REB": 9, "AST": 3, "STL": 1.0, "BLK": 1.8, "THREEPM": 0.5, "FGPCT": 0.52, "FTPCT": 0.70, "TO": 2.9 }
+}
