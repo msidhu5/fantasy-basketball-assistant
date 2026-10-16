@@ -4,6 +4,7 @@ import { renderMyTeamView } from "./views/my-team-view.js";
 import { renderCategoriesView } from "./views/categories-view.js";
 import { renderSuggestionsView } from "./views/suggestions-view.js";
 import { renderRankingsView } from "./views/rankings-view.js";
+import { renderStandingsView } from "./views/standings-view.js";
 
 const state = {
   settings: DEFAULT_SETTINGS,
@@ -45,6 +46,10 @@ const actions = {
     await sendMessage(MESSAGE_TYPES.RESET_DRAFT, {});
     await refreshSnapshot();
   },
+  async setPuntedCategories(categories) {
+    await sendMessage(MESSAGE_TYPES.SET_PUNTED_CATEGORIES, { categories });
+    await refreshSnapshot();
+  },
 };
 
 async function refreshSnapshot() {
@@ -73,13 +78,16 @@ function render() {
       renderMyTeamView(root, state, actions);
       break;
     case "categories":
-      renderCategoriesView(root, state);
+      renderCategoriesView(root, state, actions);
       break;
     case "suggestions":
       renderSuggestionsView(root, state);
       break;
     case "rankings":
       renderRankingsView(root, state);
+      break;
+    case "standings":
+      renderStandingsView(root, state);
       break;
   }
 }

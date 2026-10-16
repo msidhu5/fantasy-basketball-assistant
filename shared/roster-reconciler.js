@@ -4,8 +4,8 @@
  * read-modify-write in the background, and be unit tested directly.
  *
  * - New players (by normalized name) get added, name-matched against projections.
- * - Existing players get their positionSlot refreshed if the live scrape disagrees
- *   (self-corrects a bad/empty value captured during a transient render earlier).
+ * - Existing players get their positionSlot/teamNameRaw refreshed if the live scrape
+ *   disagrees (self-corrects a bad/empty value captured during a transient render).
  * - Players no longer present in the scrape are left untouched (the roster only
  *   grows/corrects here - removal is an explicit user action, not implied by a
  *   momentary absence, e.g. a panel that's mid-re-render).
@@ -23,12 +23,18 @@ export function reconcileRoster(currentRoster, scrapedPlayers, projectionsMap, n
         playerNameRaw: scraped.playerNameRaw,
         playerNameNormalized: normalized,
         positionSlot: scraped.positionSlot ?? null,
+        teamNameRaw: scraped.teamNameRaw ?? null,
         matchedProjectionKey: matchResult.key,
         timestampDetected: now,
         source: "observer",
       });
-    } else if (scraped.positionSlot && next[existingIdx].positionSlot !== scraped.positionSlot) {
-      next[existingIdx].positionSlot = scraped.positionSlot;
+    } else {
+      if (scraped.positionSlot && next[existingIdx].positionSlot !== scraped.positionSlot) {
+        next[existingIdx].positionSlot = scraped.positionSlot;
+      }
+      if (scraped.teamNameRaw && next[existingIdx].teamNameRaw !== scraped.teamNameRaw) {
+        next[existingIdx].teamNameRaw = scraped.teamNameRaw;
+      }
     }
   }
 

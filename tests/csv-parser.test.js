@@ -62,6 +62,7 @@ describe("suggestColumnMapping", () => {
     expect(mapping.FTPCT).toBe("ftp");
     expect(mapping.FGA).toBe("fga");
     expect(mapping.FTA).toBe("fta");
+    expect(mapping.ADP).toBe("adp");
     expect(mapping.NAME).toBe("name");
   });
 });

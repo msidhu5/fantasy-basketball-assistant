@@ -35,6 +35,20 @@ describe("computeTeamTotals", () => {
     const { playerCount } = computeTeamTotals([{ matchedProjectionKey: null }], projections);
     expect(playerCount).toBe(0);
   });
+
+  it("exposes perPlayer separately: counting stats pre-divided, percentages left as means (NOT divided by roster size)", () => {
+    const { totals, perPlayer } = computeTeamTotals(myRoster, projections);
+
+    // Counting: totals is the sum, perPlayer is the per-player average.
+    expect(totals.PTS).toBeCloseTo(35, 5);
+    expect(perPlayer.PTS).toBeCloseTo(17.5, 5);
+
+    // Percentage: BOTH are the mean. perPlayer must NOT be totals/playerCount
+    // (that double-divide is what reported ~0.23 FG% for a .465 roster).
+    expect(totals.FGPCT).toBeCloseTo(0.465, 5);
+    expect(perPlayer.FGPCT).toBeCloseTo(0.465, 5);
+    expect(perPlayer.FGPCT).not.toBeCloseTo(0.465 / 2, 3);
+  });
 });
 
 describe("computeStrengthWeakness", () => {
@@ -64,5 +78,25 @@ describe("computeStrengthWeakness", () => {
       expect(strength[category].zScore).toBe(0);
       expect(strength[category].rank).toBe("neutral");
     }
+  });
+
+  it("does not report a catastrophic phantom weakness in FG%/FT% for a roster with normal percentages", () => {
+    // Regression: percentages were being divided by roster size a second time, so a
+    // .465 FG% roster scored as .23 against a ~.49 pool mean -> z of about -6, i.e.
+    // permanently "weak", which then ~5x-overweighted FG%/FT% in every suggestion.
+    const teamTotals = computeTeamTotals(myRoster, projections);
+    const strength = computeStrengthWeakness(teamTotals, projections);
+
+    expect(strength.FGPCT.zScore).toBeCloseTo(-0.55, 1);
+    expect(strength.FGPCT.zScore).toBeGreaterThan(-1.5);
+    expect(strength.FTPCT.zScore).toBeGreaterThan(-1.5);
+  });
+
+  it("marks a punted category as 'punted' instead of its actual strong/weak/neutral rank, while still reporting the real z-score for context", () => {
+    const teamTotals = computeTeamTotals(myRoster, projections);
+    const strength = computeStrengthWeakness(teamTotals, projections, ["TO"]);
+    expect(strength.TO.rank).toBe("punted");
+    expect(strength.TO.zScore).toBeCloseTo(-0.73, 1); // unchanged - still computed for display
+    expect(strength.PTS.rank).toBe("neutral"); // untouched categories unaffected
   });
 });

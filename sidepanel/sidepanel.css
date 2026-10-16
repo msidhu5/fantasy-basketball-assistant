@@ -163,6 +163,11 @@ td {
   color: var(--muted);
 }
 
+.badge.punted {
+  background: rgba(31, 111, 235, 0.15);
+  color: var(--accent);
+}
+
 .muted {
   color: var(--muted);
 }

@@ -1,6 +1,6 @@
 import { MESSAGE_TYPES } from "../shared/constants.js";
 import { processDraftSnapshot, processManualAdd, undoLastRosterPlayer, removeRosterPlayer, resetDraft } from "./roster-processor.js";
-import { getSettings, getProjections } from "./settings-store.js";
+import { getSettings, updateSettings, getProjections } from "./settings-store.js";
 import { getDraftState } from "./draft-state-store.js";
 
 export async function routeMessage(message, sender) {
@@ -22,6 +22,11 @@ export async function routeMessage(message, sender) {
 
     case MESSAGE_TYPES.RESET_DRAFT: {
       return { draftState: await resetDraft() };
+    }
+
+    case MESSAGE_TYPES.SET_PUNTED_CATEGORIES: {
+      const settings = await updateSettings({ puntedCategories: message.payload.categories });
+      return { settings };
     }
 
     case MESSAGE_TYPES.STATE_SNAPSHOT_REQUEST: {

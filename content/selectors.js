@@ -37,6 +37,7 @@ export const SELECTORS = {
   // header row's class), with a `.player-column` cell using the same title-attribute
   // name pattern as everywhere else.
   pickHistoryRow: ['.pick-history-table [role="row"].public_fixedDataTable_bodyRow'],
+  pickHistoryCell: ['[role="gridcell"]', ".public_fixedDataTableCell_cellContent"],
 };
 
 const EMPTY_SLOT_TEXT = /^\s*empty\s*$/i;
@@ -118,4 +119,23 @@ export function extractPositionSlotFromRow(row) {
 
 export function resolvePickHistoryRows(root = document) {
   return queryFirstAll(root, SELECTORS.pickHistoryRow);
+}
+
+/**
+ * Pulls the drafting team's name out of a Pick History row. Confirmed columns are
+ * Pick | Player | Team | RK, but rather than hard-coding index 2 this identifies the
+ * team cell structurally: skip the cell holding the player column, then take the first
+ * remaining cell whose text isn't purely numeric (Pick and RK are both numbers, the
+ * team name never is). Survives column reordering or an added/removed numeric column.
+ */
+export function extractTeamNameFromRow(row) {
+  const cells = queryFirstAll(row, SELECTORS.pickHistoryCell);
+  for (const cell of cells) {
+    if (cell.querySelector(".player-column") || findPlayerLinks(cell).length > 0) continue;
+    const text = (cell.textContent || "").trim();
+    if (!text) continue;
+    if (/^[\d.]+$/.test(text)) continue;
+    return text;
+  }
+  return null;
 }
